@@ -49,7 +49,7 @@ struct ContentView: View {
                                 ExchangeInfo()
                             }
                         }
-                    }.border(.blue).foregroundStyle(.black)
+                    }.foregroundStyle(.black)
                 }
             }
         }
