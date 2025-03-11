@@ -45,9 +45,11 @@ struct ContentView: View {
                                 showExchangeModal.toggle()
                             }label: {
                                 Image(systemName: "info.circle.fill").font(.largeTitle).foregroundStyle(.white)
-                            }.padding(.trailing)
+                            }.padding(.trailing).sheet(isPresented: $showExchangeModal){
+                                ExchangeInfo()
+                            }
                         }
-                    }.border(.blue)
+                    }.border(.blue).foregroundStyle(.black)
                 }
             }
         }
