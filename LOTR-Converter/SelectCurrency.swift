@@ -8,33 +8,33 @@
 import SwiftUI
 
 struct SelectCurrency: View {
+    @Environment(\.dismiss) var closeModal
+    @Binding var leftCurrency : Currency
+    @Binding var rightCurrency : Currency
     var body: some View {
         ZStack{
             Image(.parchment).resizable().ignoresSafeArea().background(.brown)
             VStack{
-                Text("Select The Currency You are starting with :").font(.title3).multilineTextAlignment(.center)
+                Text("Select The Currency You are starting with : ").font(.headline).multilineTextAlignment(.center).padding(.bottom)
+                IconGrid(selectedCurrency: $leftCurrency).padding(.bottom)
+             
+                Text("Select The Currency You would like to convert to :").font(.headline).bold().multilineTextAlignment(.center).padding(.bottom)
                 
-                ZStack{
-                    Image(.copperpenny).resizable().scaledToFit().frame(height: 100)
-                    VStack{
-                        
-                        Text("Cooper Penny")
-                    }
-                    
-                    
-                    
-                }.background(.brown.mix(with: .black, by: 0.2).opacity(0.7))
-                
-                Text("Select The Currency You would like to convert to :").font(.headline).bold().multilineTextAlignment(.center)
+                IconGrid(selectedCurrency: $rightCurrency).padding(.bottom)
                 
                 Button("Done"){
-                    
-                }.font(.headline).padding().background(.brown.mix(with: .black, by: 0.2)).foregroundColor(.white)
-            }
+                    closeModal()
+                }.buttonStyle(.borderedProminent).font(.title3).tint(.brown.mix(with: .black, by: 0.2)).foregroundStyle(.white)
+            }.padding().multilineTextAlignment(.center).foregroundStyle(.black)
+        }.onTapGesture {
+            print("Select Currency Top Currency: \(leftCurrency) Right Currency: \(rightCurrency)")
         }
     }
 }
 
 #Preview {
-    SelectCurrency()
+    @Previewable @State var topCurrency : Currency = .cooperPenny
+    @Previewable @State var bottomCurrency : Currency = .cooperPenny
+    
+    SelectCurrency(leftCurrency: $topCurrency, rightCurrency: $bottomCurrency)
 }

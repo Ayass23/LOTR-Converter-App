@@ -9,8 +9,12 @@ import SwiftUI
 
 struct ContentView: View {
     @State var showExchangeModal = false
+    @State var showSelectCurrencyModal = false
     @State var leftValue = ""
     @State var rightValue = ""
+    
+    @State var leftCurrencySelected = Currency.silverPiece
+    @State var rightCurrencySelected = Currency.goldPiece
     var body: some View {
         ZStack{
             //Background Image
@@ -23,19 +27,23 @@ struct ContentView: View {
                         HStack{
                             VStack{
                                 HStack{
-                                    Image(.silverpenny).resizable().scaledToFit().frame(height: 33)
-                                    Text("Silver Pieces").font(.headline).foregroundStyle(.white)
+                                    Image(leftCurrencySelected.image).resizable().scaledToFit().frame(height: 33)
+                                    Text(leftCurrencySelected.name).font(.headline).foregroundStyle(.white)
                                 }.padding(.bottom, -5)
                                 TextField("Amount", text: $leftValue).textFieldStyle(.roundedBorder)
+                            }.onTapGesture {
+                                showSelectCurrencyModal.toggle()
                             }
                             Image(systemName: "equal").font(.largeTitle).foregroundStyle(.white).symbolEffect(.pulse)
                             
                             VStack{
                                 HStack{
-                                    Text("Gold Piece").font(.headline).foregroundStyle(.white)
-                                    Image(.goldpiece).resizable().scaledToFit().frame(height: 33)
+                                    Text(rightCurrencySelected.name).font(.headline).foregroundStyle(.white)
+                                    Image(rightCurrencySelected.image).resizable().scaledToFit().frame(height: 33)
                                 }.padding(.bottom, -5)
                                 TextField("Amount", text: $rightValue).textFieldStyle(.roundedBorder)
+                            }.onTapGesture {
+                                showSelectCurrencyModal.toggle()
                             }
                         }.padding().background(.black.opacity(0.5 )).clipShape(.capsule)
                         Spacer()
@@ -45,11 +53,13 @@ struct ContentView: View {
                                 showExchangeModal.toggle()
                             }label: {
                                 Image(systemName: "info.circle.fill").font(.largeTitle).foregroundStyle(.white)
-                            }.padding(.trailing).sheet(isPresented: $showExchangeModal){
-                                ExchangeInfo()
-                            }
+                            }.padding(.trailing)
                         }
-                    }.foregroundStyle(.black)
+                    }.sheet(isPresented: $showExchangeModal){
+                        ExchangeInfo()
+                    }.sheet(isPresented: $showSelectCurrencyModal){
+                        SelectCurrency(leftCurrency: $leftCurrencySelected, rightCurrency: $rightCurrencySelected)
+                    }
                 }
             }
         }
