@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct ContentView: View {
     @State var showExchangeModal = false
     @State var showSelectCurrencyModal = false
@@ -15,6 +16,8 @@ struct ContentView: View {
     
     @State var leftCurrencySelected = Currency.silverPiece
     @State var rightCurrencySelected = Currency.goldPiece
+    
+    
     var body: some View {
         ZStack{
             //Background Image
@@ -30,7 +33,10 @@ struct ContentView: View {
                                     Image(leftCurrencySelected.image).resizable().scaledToFit().frame(height: 33)
                                     Text(leftCurrencySelected.name).font(.headline).foregroundStyle(.white)
                                 }.padding(.bottom, -5)
-                                TextField("Amount", text: $leftValue).textFieldStyle(.roundedBorder)
+                                TextField("Amount", text: $leftValue)
+                                    .textFieldStyle(.roundedBorder)
+                                    .onChange(of: leftValue) { rightValue = leftCurrencySelected.convert(leftValue, to: rightCurrencySelected)
+                                }
                             }.onTapGesture {
                                 showSelectCurrencyModal.toggle()
                             }
@@ -41,7 +47,7 @@ struct ContentView: View {
                                     Text(rightCurrencySelected.name).font(.headline).foregroundStyle(.white)
                                     Image(rightCurrencySelected.image).resizable().scaledToFit().frame(height: 33)
                                 }.padding(.bottom, -5)
-                                TextField("Amount", text: $rightValue).textFieldStyle(.roundedBorder)
+                                TextField("Amount", text: $rightValue).textFieldStyle(.roundedBorder).disabled(true)
                             }.onTapGesture {
                                 showSelectCurrencyModal.toggle()
                             }

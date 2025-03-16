@@ -8,11 +8,11 @@
 import SwiftUI
 
 enum Currency: Double, CaseIterable, Identifiable{
-    case cooperPenny
-    case silverPenny
-    case silverPiece
-    case goldPenny
-    case goldPiece
+    case cooperPenny = 6400
+    case silverPenny = 64
+    case silverPiece = 16
+    case goldPenny = 4
+    case goldPiece = 1
     
     var id : Currency{
         self
@@ -47,5 +47,15 @@ enum Currency: Double, CaseIterable, Identifiable{
         case .goldPiece:
             "Gold Piece"
         }
+    }
+    
+    func convert(_ amountString : String, to currency : Currency) -> String {
+            guard let doubleAmount = Double(amountString) else {
+                return ""
+            }
+            let convertedAmount = (doubleAmount / self.rawValue) * currency.rawValue
+            
+            return String(format:  "%.2f", convertedAmount)
+        
     }
 }
